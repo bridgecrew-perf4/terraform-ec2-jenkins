@@ -77,6 +77,17 @@ resource "aws_security_group" "ec2-sec-group" {
     {
       cidr_blocks      = [var.my_ip]
       description      = "Allows incoming webserver connection to machine"
+      from_port        = 8080
+      ipv6_cidr_blocks = []
+      prefix_list_ids  = []
+      protocol         = "tcp"
+      security_groups  = []
+      self             = false
+      to_port          = 8080
+    },
+    {
+      cidr_blocks      = [var.my_ip]
+      description      = "Allows incoming webserver connection to machine"
       from_port        = 80
       ipv6_cidr_blocks = []
       prefix_list_ids  = []
@@ -125,7 +136,7 @@ resource "aws_instance" "ec2-server" {
           sudo wget -O /etc/yum.repos.d/jenkins.repo \
           https://pkg.jenkins.io/redhat-stable/jenkins.repo
           sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
-          sudo yum upgrade -y
+          sudo yum update -y
           sudo yum install jenkins java-1.8.0-openjdk-devel -y
           sudo systemctl daemon-reload
           sudo systemctl start jenkins
